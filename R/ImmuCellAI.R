@@ -62,8 +62,7 @@ self_sig=function(sig_file){
 #'
 #' @return
 
-getResult = function(sample,data_type,group_tag,response_tag,customer,sig_file=NULL,exp_file=NULL,save_abun="Sample_abundance",save_group="Group_abundance",save_icb="ICB_response",save_plot="Group_comparison.png",save_bar="Abundance_barplot.png"){
-  print(save_bar)
+ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=NULL,exp_file=NULL){
   if (customer==TRUE){
     paper_marker<-self_sig(sig_file)
     marker_exp=read.csv(exp_file,row.names=1,fill = TRUE,check.names = F,header=T)
@@ -179,9 +178,9 @@ getResult = function(sample,data_type,group_tag,response_tag,customer,sig_file=N
     #row.names(exp_median)=c(group_name,"p value")
     row.names(exp_median)=c(group_name,"p value")
     group_fre<<-exp_median
-    write.table(group_fre,save_group,sep="\t",quote=F,col.names = NA)
+   # write.table(group_fre,save_group,sep="\t",quote=F,col.names = NA)
     T_FRE<<-result_mat
-    plot_fun("boxplot",1,save_plot,customer)
+   # plot_fun("boxplot",1,save_plot,customer)
   }
   if(response_tag){
     feature=names(paper_marker[-c(23,24)])
@@ -200,7 +199,7 @@ getResult = function(sample,data_type,group_tag,response_tag,customer,sig_file=N
     ICB_response<<-cbind(Response,Score,result_mat)
     colnames(result_mat)=c("CD4_naive","CD8_naive","Cytotoxic","Exhausted","Tr1","nTreg","iTreg","Th1","Th2","Th17",
                            "Tfh","Central_memory","Effector_memory","NKT","MAIT","DC","B_cell","Monocyte","Macrophage","NK","Neutrophil","Gamma_delta","CD4_T","CD8_T","InfiltrationScore")
-    write.table(ICB_response,save_icb,sep="\t",quote=F,col.names = NA)
+    #write.table(ICB_response,save_icb,sep="\t",quote=F,col.names = NA)
   }
   result_mat=as.matrix(result_mat)
   #print(ncol(result_mat))
@@ -210,16 +209,8 @@ getResult = function(sample,data_type,group_tag,response_tag,customer,sig_file=N
   }else{
     T_FRE<<-result_mat
   }
+  return(Sample_abundance=T_FRE, Group_result=group_fre, Response=ICB_response)
 
-  #  shinyWidgets::updateProgressBar(title = 'Done',id = "pb2",value=100,session=getDefaultReactiveDomain())
-  TAG<<-1
-  # incProgress(20, detail = "Done"
-  #print(head(result_mat))
- # print(save_bar)
-  plot_fun("barplot",1,save_bar,customer)
-  write.table(result_mat,save_abun,sep="\t",quote=F,col.names = NA)
-  # return(result_mat)
-  # })
 }
 
 
@@ -315,105 +306,3 @@ compensation = function(raw_score,compensation_matrix){
 }
 
 
-#' Title
-#'
-#' @param figure_type
-#' @param group_tag
-#' @param save_plot
-#' @param customer
-#'
-#' @return
-#' @export
-#'
-#' @examples
-
-plots<-list()
-plot_fun=function(figure_type,group_tag,save_plot,customer){
- # print(ncol(T_FRE))
-  if(customer==0){
-    data=T_FRE[,seq(1,ncol(T_FRE)-1)]
-    colnames(data)<-c("CD4 naive","CD8 naive","Tc","Tex","Tr1","nTreg","iTreg","Th1","Th2","Th17","Tfh","Tcm","Tem","NKT","MAIT","DC","B cell","Monocyte","Macrophage","NK","Neutrophil","Tgd","CD4 T","CD8 T")
-    p=NULL
-    N=nrow(data)
-    count=ncol(data)
-    groups=as.factor(as.vector(unlist(group_content)))
-  }else{
-    data=T_FRE
-    count=ncol(data)
-    p=NULL
-    N=nrow(data)
-  }
-  if ((group_tag)&&(figure_type=="boxplot")){
-    plot_index<-0
-    for (cell in (colnames(data))){
-      #  Sys.sleep(0.55)
-      plot_index=plot_index+1
-      cell_plot(data[,plot_index],plot_index,groups,cell)
-      #incProgress(0.04, detail = cell)
-    }
-    #incProgress(0.02, detail = "Multiplot generating")
-    # pdf(paste(save_plot,".pdf",sep=""),16,4)
-    # ggplot2.multiplot(plotlist = plots,cols = 12)
-    # dev.off()
-    png(save_plot,bg="transparent",width =1500 ,height=400)
-    ggplot2.multiplot(plotlist = plots,cols = 12)
-    dev.off()
-    #group_box_figure<<-ggarrange(plotlist = plots,ncol=12)
-    group_tag<<-1
-    # withProgress(message = 'Creating plot', value = 0.1, {
-
-    #incProgress(0.02, detail = "Done")
-  }
-  #print(group_box_figure)
-
-  if(figure_type=="barplot"){
-    #  print("Draw barplot")
-    x=rep(row.names(data),each=count)
-    y=c()
-    p=NULL
-    for(i in seq(1,N)){
-      y=c(y,as.numeric(data[i,]))
-    }
-    df=data.frame(x=x,y=y)
-    cell_type=rep(colnames(data),times=N)
-    #print(head(df))
-    #p1=ggplot(df, mapping = aes(x = x, y = y, fill = cell_type)) + xlab("Sample")+ylab("Abundance")+geom_bar(stat = 'identity',position = 'fill',width=0.3)+theme(legend.text=element_text(size=12),axis.text.y=element_text(size=14),axis.text.x=element_text(angle=90,hjust = 0.5,vjust=0.5,size=14))+scale_fill_discrete(name="Cell type")+theme(panel.background = element_rect(fill='#EDEDED', colour='#EDEDED'))+
-    # theme(plot.margin=unit(x=c(0,0,0,0),units="mm"),plot.background = element_rect(fill="#EDEDED"))+theme(axis.title.x = element_text(size = 16),axis.title.y = element_text(size = 16))
-
-    png(save_plot,bg="transparent",width =1500 ,height=400)
-    p<-ggplot(df, mapping = aes(x = x, y = y, fill = cell_type)) + xlab("Sample")+ylab("Abundance")+geom_bar(stat = 'identity',position = 'fill',width=0.3)+theme(legend.text=element_text(size=12),axis.text.y=element_text(size=14),axis.text.x=element_text(angle=90,hjust = 0.5,vjust=0.5,size=14))+scale_fill_discrete(name="Cell type")+theme(panel.background = element_rect(fill='#EDEDED', colour='#EDEDED'))+theme(plot.margin=unit(x=c(0,0,0,0),units="mm"),plot.background = element_rect(fill="#EDEDED"))+theme(axis.title.x = element_text(size = 16),axis.title.y = element_text(size = 16))
-    print(p)
-    dev.off()
-
-    #return(p1)
-  }
-
-}
-
-#' Title
-#'
-#' @param fra
-#' @param plot_index
-#' @param group
-#' @param celltype
-#'
-#' @return group comparison result
-
-cell_plot=function(fra,plot_index,group,celltype){
-  #df$fra=as.numeric(c((pre_fra[,"iTreg"]+pre_fra[,"nTreg"]+pre_fra[,"Tr1"]),(on_fra[,"iTreg"]+on_fra[,"nTreg"]+on_fra[,"Tr1"])))
-  df=data.frame(x=as.factor(as.numeric(group)),y=fra)
-  if(length(unique(group))>2){
-    p=ggplot(df,mapping= aes(x=x, y=y,fill=as.factor(group)))+theme(axis.text.x=element_text(angle=50,hjust = 0.5,vjust=0.5))+
-      theme(panel.grid.major =element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(),axis.line = element_line(colour = "black",size = 0.2),plot.title = element_text(hjust = 0.5,size = 8))+
-      labs(title =celltype,x=NULL,y=NULL)+theme(legend.position='none',axis.text.x =element_text(size=16), axis.text.y=element_text(size=16),plot.title = element_text(size=16))+geom_boxplot(width=0.5)+stat_compare_means(method = "anova",label = "p.signif")
-
-  }else{
-    p=ggplot(df,mapping= aes(x=x, y=y,fill=as.factor(group)))+theme(axis.text.x=element_text(angle=50,hjust = 0.5,vjust=0.5))+scale_fill_manual(values=c("#0077c8","#e84118"))+
-      theme(panel.grid.major =element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank(),axis.line = element_line(colour = "black",size = 0.2),plot.title = element_text(hjust = 0.5,size = 8))+
-      labs(title =celltype,x=NULL,y=NULL)+theme(legend.position='none',axis.text.x =element_text(size=16), axis.text.y=element_text(size=16),plot.title = element_text(size=16))+geom_boxplot(width=0.5)+stat_compare_means(method = "wilcox",label = "p.format")
-  }
-  plots[[plot_index]]<<-p
-}
-#print(args)
-#getResult(args$sample,args$dataType,args$groupTag,args$customer,args$signatureGene,args$signatureExpression,args$abundance,args$groupDiff,
-#                  args$response,args$abundancePlot,args$groupPlot)

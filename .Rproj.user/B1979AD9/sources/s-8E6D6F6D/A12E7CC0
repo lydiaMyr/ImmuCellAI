@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1655387267235.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A12E7CC0",
+    "lastKnownWriteTime" : 1655387895,
+    "last_content_update" : 1655387895313,
+    "path" : "F:/workspace/ImmuCellAI_build/ImmuCellAI/R/ImmuCellAI.R",
+    "project_path" : "R/ImmuCellAI.R",
+    "properties" : {
+        "cursorPosition" : "211,58",
+        "scrollLine" : "184"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
