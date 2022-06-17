@@ -12,16 +12,6 @@
 #   Install Package:           'Ctrl + Shift + B'
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
-library(GSVA)
-library(ggplot2)
-library(ggpubr)
-library(e1071)
-library(survival)
-library(survminer)
-library(KMsurv)
-library(ggpubr)
-library(gridExtra)
-library(easyGgplot2)
 
 T_FRE<<-c()
 sample_TIL=c()
@@ -45,6 +35,8 @@ self_sig=function(sig_file){
 }
 
 
+
+
 #' Title
 #'
 #' @param sample
@@ -54,14 +46,11 @@ self_sig=function(sig_file){
 #' @param customer
 #' @param sig_file
 #' @param exp_file
-#' @param save_abun
-#' @param save_group
-#' @param save_icb
-#' @param save_plot
-#' @param save_bar
 #'
 #' @return
-
+#' @export
+#'
+#' @examples
 ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=NULL,exp_file=NULL){
   if (customer==TRUE){
     paper_marker<-self_sig(sig_file)
@@ -209,7 +198,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
   }else{
     T_FRE<<-result_mat
   }
-  return(Sample_abundance=T_FRE, Group_result=group_fre, Response=ICB_response)
+  return(list(Sample_abundance=T_FRE, Group_result=group_fre, Response=ICB_response))
 
 }
 
