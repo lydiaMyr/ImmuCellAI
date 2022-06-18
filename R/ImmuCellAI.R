@@ -24,6 +24,8 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
   data("train_tag")
   data("compensation_matrix")
   data("immune_infiltate_marker")
+  group_fre<-c()
+  ICB_response<-c()
   if (customer==TRUE){
     paper_marker<-sig_file
     marker_exp=exp_file
@@ -63,7 +65,6 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     result = result - apply(result,1,min)
     #result[which(result<0)]=0
   }
-  print("work_done")
   compensation_matrix_num = apply(compensation_matrix,2,as.numeric)
   # progress$set(value = 20,detail = "Adjusting result by Compensation matrix")
   # incProgress(0.2, detail = "Immune infiltration calculating")
@@ -79,7 +80,6 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     if(ncol(result_norm)==1){
       InfiltrationScore=sum(result_norm)
     }else{
-      # print("error test")
       if(nrow(result_norm)==24){
         InfiltrationScore = apply(result_norm[c('Bcell','CD4_T','CD8_T','DC','Macrophage','Monocyte','Neutrophil','NK'),],2,sum)
       }else{
@@ -90,9 +90,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     result_mat = rbind(result_norm,InfiltrationScore)
   }else{
     result_mat=result
-    # print(head(result_norm))
   }
-  #print("test")
   if(ncol(result_mat)>1){
     result_mat=apply(result_mat,1,function(x) round(x,3))
   }else{
@@ -139,7 +137,6 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     rlt<- svm(train_tag ~ ., data=df, kernel="radial",cross=5,type="C-classification")
     pred_data=result_mat[,feature]
     pred_result1=predict(rlt1,pred_data)
-    #print(pred_result1)
     pred_result=predict(rlt,pred_data)
     Response=as.vector(unlist( pred_result))
     Score=round(as.vector(unlist( pred_result1)),3)
@@ -151,7 +148,6 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     #write.table(ICB_response,save_icb,sep="\t",quote=F,col.names = NA)
   }
   result_mat=as.matrix(result_mat)
-  #print(ncol(result_mat))
   if(ncol(result_mat)==1){
     colnames(result_mat)=colnames(sample)
     T_FRE<<-t(result_mat)
