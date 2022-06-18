@@ -1,23 +1,4 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
 
-T_FRE<<-c()
-sample_TIL=c()
-group_fre=c()
-TAG=0
-ICB_response=NULL
 
 #' Title
 #'
@@ -47,20 +28,6 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     paper_marker<-sig_file
     marker_exp=exp_file
   }
-  sample=read.table(sample,header=T,sep="\t",check.names = F)
-  sample=as.matrix(sample)
-  if(ncol(sample)==2){
-    sam_name=colnames(sample)[2]
-    row.names(sample)=sample[,1]
-    sample=as.matrix(sample[,-1])
-    colnames(sample)=sam_name
-  }else{
-    row.names(sample)=sample[,1]
-    sample=sample[,-1]
-  }
-  #  sample=as.matrix(sample)
-  #  row.names(sample)=sample[,1]
-  #  sample=sample[,-1]
   group_index=0
   if (group_tag){
     #group_index=as.numeric(as.vector(unlist(grep("group",row.names(sample)))))
@@ -96,7 +63,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     result = result - apply(result,1,min)
     #result[which(result<0)]=0
   }
-  #print("work_done")
+  print("work_done")
   compensation_matrix_num = apply(compensation_matrix,2,as.numeric)
   # progress$set(value = 20,detail = "Adjusting result by Compensation matrix")
   # incProgress(0.2, detail = "Immune infiltration calculating")
@@ -133,7 +100,6 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
   }
 
   if(group_tag){
-    print("Group!!!!!!!!!!!")
     group_name<-sort(unique(as.vector(unlist(group_column))))
     p_va=c()
     group_column<-as.numeric(as.factor(as.vector(unlist(group_column))))
