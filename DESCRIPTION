@@ -3,7 +3,7 @@ Version: 0.1.0
 Date: 20220618
 Title: ImmuCellAI: A Unique Method for Comprehensive T-Cell Subsets Abundance Prediction and its Application in Cancer Immunotherapy
 Maintainer: Ya-Ru Miao<1076754963@qq.com>
-Depends: GSVA, gridExtra, e1071,pracma
+Depends: GSVA, gridExtra, e1071,pracma,quadprog
 Suggests: MASS
 Description: ImmuCellAI (Immune Cell Abundance Identifier) is a tool to estimate the abundance of 24 immune cells from gene expression dataset including RNA-Seq and microarray data, in which the 24 immune cells are comprised of 18 T-cell subtypes and 6 other immune cells: B cell, NK cell, Monocyte cell, Macrophage cell, Neutrophil cell and DC cell.
 License: GPL
