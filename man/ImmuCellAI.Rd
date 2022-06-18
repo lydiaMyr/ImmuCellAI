@@ -23,3 +23,6 @@ ImmuCellAI(
 \description{
 Title
 }
+\examples{
+
+}

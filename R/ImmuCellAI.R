@@ -33,7 +33,16 @@ ICB_response=NULL
 #' @export
 #'
 #' @examples
+#'
+
 ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=NULL,exp_file=NULL){
+  data("marker_exp")
+  data("marker_exp_T")
+  data("paper_marker")
+  data("train_data")
+  data("train_tag")
+  data("compensation_matrix")
+  data("immune_infiltate_marker")
   if (customer==TRUE){
     paper_marker<-sig_file
     marker_exp=exp_file
