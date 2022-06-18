@@ -18,24 +18,6 @@ sample_TIL=c()
 group_fre=c()
 TAG=0
 ICB_response=NULL
-group_content=c()
-
-#' @title self-build reference file
-#' @description
-#' @details Please input the expression matrix separated by tab, rownames of the file must be gene symbol.
-#' @param sig_file self-build cell type gene signature file.
-#' @return A list of cell type gene signatures.
-
-self_sig=function(sig_file){
-  ref_sig=read.csv(sig_file,row.names=1,fill = TRUE,check.names = F,header=F)
-  paper_marker<-list()
-  #compensation_matrix<<-compensation_matrix[,-6]
-  for(cell in row.names(ref_sig)){paper_marker[[cell]]<-unique(as.vector(unlist(ref_sig[cell,])))}
-  return(paper_marker)
-}
-
-
-
 
 #' Title
 #'
@@ -53,8 +35,8 @@ self_sig=function(sig_file){
 #' @examples
 ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=NULL,exp_file=NULL){
   if (customer==TRUE){
-    paper_marker<-self_sig(sig_file)
-    marker_exp=read.csv(exp_file,row.names=1,fill = TRUE,check.names = F,header=T)
+    paper_marker<-sig_file
+    marker_exp=exp_file
   }
   sample=read.table(sample,header=T,sep="\t",check.names = F)
   sample=as.matrix(sample)
@@ -74,7 +56,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
   if (group_tag){
     #group_index=as.numeric(as.vector(unlist(grep("group",row.names(sample)))))
     group_column<-sample[1,]
-    group_content<<-sample[1,]
+    group_content<-sample[1,]
     sample=sample[-1,]
   }
   sam = apply(sample,2,as.numeric)
@@ -105,6 +87,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     result = result - apply(result,1,min)
     #result[which(result<0)]=0
   }
+  #print("work_done")
   compensation_matrix_num = apply(compensation_matrix,2,as.numeric)
   # progress$set(value = 20,detail = "Adjusting result by Compensation matrix")
   # incProgress(0.2, detail = "Immune infiltration calculating")
@@ -133,6 +116,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     result_mat=result
     # print(head(result_norm))
   }
+  #print("test")
   if(ncol(result_mat)>1){
     result_mat=apply(result_mat,1,function(x) round(x,3))
   }else{
@@ -140,6 +124,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
   }
 
   if(group_tag){
+    print("Group!!!!!!!!!!!")
     group_name<-sort(unique(as.vector(unlist(group_column))))
     p_va=c()
     group_column<-as.numeric(as.factor(as.vector(unlist(group_column))))
@@ -185,7 +170,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
     Score=round(as.vector(unlist( pred_result1)),3)
     colnames(result_mat)=c("CD4_naive","CD8_naive","Cytotoxic","Exhausted","Tr1","nTreg","iTreg","Th1","Th2","Th17",
                            "Tfh","Central_memory","Effector_memory","NKT","MAIT","DC","B_cell","Monocyte","Macrophage","NK","Neutrophil","Gamma_delta","CD4_T","CD8_T","InfiltrationScore")
-    ICB_response<<-cbind(Response,Score,result_mat)
+    ICB_response<<-cbind(Response,Score)
     colnames(result_mat)=c("CD4_naive","CD8_naive","Cytotoxic","Exhausted","Tr1","nTreg","iTreg","Th1","Th2","Th17",
                            "Tfh","Central_memory","Effector_memory","NKT","MAIT","DC","B_cell","Monocyte","Macrophage","NK","Neutrophil","Gamma_delta","CD4_T","CD8_T","InfiltrationScore")
     #write.table(ICB_response,save_icb,sep="\t",quote=F,col.names = NA)
