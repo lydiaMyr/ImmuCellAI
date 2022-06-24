@@ -2,10 +2,12 @@
 ImmuCellAI (Immune Cell Abundance Identifier, http://bioinfo.life.hust.edu.cn/ImmuCellAI/) is a tool to estimate the abundance of 24 immune cells from gene expression dataset including RNA-Seq and microarray data
 
 ## Installation
-install.packages("devtools")<br/>
-library(devtools)<br/>
-install_github("lydiaMyr/ImmuCellAI")
-
+``` bash
+install.packages("devtools")
+library(devtools)
+install_github("lydiaMyr/ImmuCellAI@main")
+#if the "/bin/gtar: not found" error occured, please run the following command "export TAR="/bin/tar" before installation.
+```
 ## Geting started
 ### new version
 ``` bash
