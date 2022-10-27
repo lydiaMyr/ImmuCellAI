@@ -18,7 +18,7 @@ install_github("lydiaMyr/ImmuCellAI@main")
 #group_tag: One of 0 and 1, if there is the need to perform the comparision between different groups. If the value is 1, users need to add a group tag row in the input epxression matrix to explain the group of each sample.
 #response_tag: One of 0 and 1, if there is the need to predict the ICB response of each sample.
 
-ImmuCellAI_new(sample_expression,datatype,group_tag,response_tag)
+ImmuCellAI_new(sample_expression,data_type,group_tag,response_tag)
 #output
 The output of the function is a list with three variables including sample immune cell abundance, group comparison result and ICB response prediction result.
 
@@ -32,7 +32,7 @@ The output of the function is a list with three variables including sample immun
 #group_tag: One of 0 and 1, if there is the need to perform the comparision between different groups. If the value is 1, users need to add a group tag row in the input epxression matrix to explain the group of each sample.
 #response_tag: One of 0 and 1, if there is the need to predict the ICB response of each sample.
 #customer: One of 0 and 1, if there is the need to upload the self-build reference file. if the value = 1, users need to provide the gene signature (by list format in R) and reference expression matrix with rownames is gene, colnames is cell type and separated by tab. 
-ImmuCellAI(sample_expression,datatype,group_tag,response_tag,customer)
+ImmuCellAI(sample_expression,data_type,group_tag,response_tag,customer)
 
 #output
 The output of the function is a list with three variables including sample immune cell abundance, group comparison result and ICB response prediction result.
