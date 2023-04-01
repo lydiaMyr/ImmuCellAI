@@ -34,7 +34,7 @@ ImmuCellAI = function(sample,data_type,group_tag,response_tag,customer,sig_file=
   if (group_tag){
     #group_index=as.numeric(as.vector(unlist(grep("group",row.names(sample)))))
     group_column<-sample[1,]
-    group_content<-sample[1,]
+    group_content<<-sample[1,]
     sample=sample[-1,]
   }
   result_mat<-Sample_abundance_calculation(sample,paper_marker,marker_exp,data_type,customer)
