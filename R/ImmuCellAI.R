@@ -338,7 +338,9 @@ ImmuCellAI_new<-function(sample,data_type,group_tag,response_tag,customer=0,sig_
     layer1_abun_normlized<-apply(layer1_abun[,-11],1,function(x) (x/sum(x)))
     layer1_abun_normlized<-rbind(layer1_abun_normlized,layer1_abun[,11])
     row.names(layer1_abun_normlized)[11]=colnames(layer1_abun)[11]
-
+    if (group_tag){
+      group_content<<-sample[1,]
+    }
     layer2_abun_normlized<-apply(layer2_abun,1,function(x) (x/sum(x)))
 
     CD4_sub<-c("CD4_naive","Tr1","nTreg","iTreg","Th1","Th2","Th17","Tfh")
