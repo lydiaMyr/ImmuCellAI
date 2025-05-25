@@ -1,5 +1,5 @@
 # ImmuCellAI
-ImmuCellAI (Immune Cell Abundance Identifier, http://bioinfo.life.hust.edu.cn/ImmuCellAI/) is a tool to estimate the abundance of 24 immune cells from gene expression dataset including RNA-Seq and microarray data
+ImmuCellAI (Immune Cell Abundance Identifier, https://guolab.wchscu.cn/ImmuCellAI/) is a tool to estimate the abundance of 24 immune cells from gene expression dataset including RNA-Seq and microarray data
 
 ## Installation
 ``` bash
